@@ -12,24 +12,21 @@
 #else, print a limb on the gallows (add a counter to keep track of this)
 #when counter reaches its end point, print you lose and reveal the word
 #when len of puzzle == len word, print you won
+import random
 
 class Hangman:
     def __init__(self):
         self.puzzle = []
 
-    def correctGuess(self):
-        pass
-
-    def incorrectGuess(self):
-        pass
+    def __str__(self):
+        return f"{self.puzzle}"
 
     def test_char(self, char):
         for item in word.lower():
             if item == char:
                 pass                #print it on the approppriate position
-
-    def printGallows(self, counter):
-        return counter
+            else:
+                pass                #record the amount of guesses left
     
     def printPuzzle(self, puzzle):
         return puzzle
@@ -40,10 +37,8 @@ if __name__ == "__main__":
     while True:
         puzzle = 0
         counter = 0             #set counter
-        Hangman.printGallows    #print gallows
-        Hangman.printPuzzle     #print puzzle
         char = input("Guess a letter: ")
-        Hangman.test_char       #test char
+        print(Hangman.test_char)       #test char
         if len(puzzle) == len(word):
             print("You won in {guesses} guesses!")
         if counter == 3000:
