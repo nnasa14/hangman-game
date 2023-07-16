@@ -21,25 +21,55 @@ class Hangman:
     def __str__(self):
         return f"{self.puzzle}"
 
+    def random_word(self):
+        with open("words.json", 'r') as file:
+            word_list = "words.json"(file)
+
+        random_word = random.choice(word_list)
+        return random_word
+
     def test_char(self, char):
         for item in word.lower():
             if item == char:
-                pass                #print it on the approppriate position
+                Hangman().printPuzzle(char)     #print it on the approppriate position
             else:
-                pass                #record the amount of guesses left
+                attempts =+ 1
+                return f"Incorrect. You have {attempts} attempts left."
     
-    def printPuzzle(self, puzzle):
-        return puzzle
+    def printPuzzle(self, char):
+        for item in word:
+            if char == " ":
+                print(item)
+            if char == item:
+                print(char)
+            else:
+                print("_")
+        
 
 if __name__ == "__main__":
-    word = "antiquated"        #get random string as a global variable
+    hangman = Hangman()
     
+    word = hangman.random_word        #get random string as a global variable
+
+    difficulty = input("Please select your difficulty: (hard, normal, easy)")
+    if difficulty == "hard":
+        guesses = 3
+    elif difficulty == "normal":
+        guesses = 5
+    elif difficulty == "easy":
+        guesses = 7 
+    else:
+        print('Please run again and type "hard", "normal", or "easy".')
+
+
     while True:
+        if guesses == 0:
+            break
         puzzle = 0
-        counter = 0             #set counter
+        attempts = 0
         char = input("Guess a letter: ")
         print(Hangman.test_char)       #test char
         if len(puzzle) == len(word):
             print("You won in {guesses} guesses!")
-        if counter == 3000:
+        if attempts == guesses:
             print("You lost. The correct answer is: {word}")
