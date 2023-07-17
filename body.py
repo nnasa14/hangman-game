@@ -29,9 +29,11 @@ class Hangman:
         for item in target_word.lower():
             if item == char:
                 self.editPuzzle(char)     #print it on the approppriate position
-            else:
-                incorrect_attempts =+ 1
-                return f"Incorrect. You have {incorrect_attempts} attempts left."
+                return self.puzzle
+
+        incorrect_attempts =+ 1
+        print(f"Incorrect. You have {incorrect_attempts} attempts left.")
+        return 
     
     def editPuzzle(self, char):
         for index, item in enumerate(self.word):
@@ -55,9 +57,11 @@ if __name__ == "__main__":
 
     guesses = 3
     incorrect_attempts = 0
-    global_puzzle = hangman_instance.puzzle
+    attempts = 0
 
-    print(global_puzzle)
+    puzzle_list = hangman_instance.puzzle
+
+    print(puzzle_list)
 
     while True:
         #if guesses == 0:
@@ -66,9 +70,16 @@ if __name__ == "__main__":
         char_guess = str(input("Guess a letter: "))
         #print(f"Your guess was {char_guess}")
         hangman_instance.test_char(char_guess)     
-        print(global_puzzle)                       
+        print(puzzle_list)   
+        attempts += 1                    
 
-        if global_puzzle == target_word:
-            print("You won in {guesses} guesses!")
+        puzzle_str = ""
+        for item in puzzle_list:                    #turn the list of "_" into a string
+            puzzle_str += str(item)
+
+        if puzzle_str == target_word:
+            print(f"You won in {attempts} guesses!")
+            break
         if incorrect_attempts == guesses:
-            print("You lost. The correct answer is: {word}")
+            print(f"You lost. The correct answer is: {target_word}")
+            break
