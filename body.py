@@ -32,7 +32,7 @@ class Hangman:
                 return self.puzzle
 
         incorrect_attempts =+ 1
-        print(f"Incorrect. You have {incorrect_attempts} attempts left.")
+        print(f"Incorrect. You have {incorrect_attempts} attempts left.")   #fix this so that the variable does not get reset each instance
         return 
     
     def editPuzzle(self, char):
@@ -45,7 +45,7 @@ if __name__ == "__main__":
     hangman_instance = Hangman()
     target_word = hangman_instance.word
 
-    """difficulty = input("Please select your difficulty: (hard, normal, easy)")
+    difficulty = input("Please select your difficulty: (hard, normal, easy)")
     if difficulty == "hard":
         guesses = 3
     elif difficulty == "normal":
@@ -53,9 +53,8 @@ if __name__ == "__main__":
     elif difficulty == "easy":
         guesses = 7 
     else:
-        print('Please run again and type "hard", "normal", or "easy".')"""
+        print('Please run again and type "hard", "normal", or "easy".')
 
-    guesses = 3
     incorrect_attempts = 0
     attempts = 0
 
