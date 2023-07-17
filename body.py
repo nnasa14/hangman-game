@@ -51,15 +51,13 @@ if __name__ == "__main__":
     hangman_instance = Hangman()
     target_word = hangman_instance.word
 
-    difficulty = input("Please select your difficulty: (hard, normal, easy, demo)")
+    difficulty = input("Please select your difficulty: (hard, normal, easy)")
     if difficulty == "hard":
         guesses = 3
     elif difficulty == "normal":
         guesses = 5
     elif difficulty == "easy":
         guesses = 7 
-    elif difficulty == "demo":
-        guesses = 100000000000
     else:
         print('Please run again and type "hard", "normal", or "easy".')
 
