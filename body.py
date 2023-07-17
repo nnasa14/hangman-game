@@ -39,6 +39,12 @@ class Hangman:
         for index, item in enumerate(self.word):
             if char == item:
                 self.puzzle[index] = char
+
+    def guessWord(self, guess):
+        if guess == target_word:
+            print(f"Your guess, {guess}, was correct!")
+        else:
+            print(f"You guess, {guess}, was incorrect.")
         
 
 if __name__ == "__main__":
