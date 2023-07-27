@@ -4,10 +4,10 @@ from Hangman import Hangman
         
 
 if __name__ == "__main__":
-    #root = tk.Tk()
-    #root.title("Hangman")
+    root = tk.Tk()
+    root.title("Hangman")
     hangman_instance = Hangman()
-    #root.mainloop()
+    root.mainloop()
 
     target_word = hangman_instance.word
 

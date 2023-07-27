@@ -1,3 +1,5 @@
+import tkinter as tk
+from tkinter import messagebox
 import json
 import random
 
@@ -26,8 +28,68 @@ class Hangman:
             self.word = None
             self.puzzle = []
 
+        self.canvas = tk.Canvas(width=300, height=300)
+        self.canvas.pack()
+
+        self.restart_button = tk.Button(text="New Game",command=self.new_game)
+        self.new_game()
+
     def __str__(self):
         return f"{self.word}"
+    
+    def new_game(self):
+        self.word = Hangman.get_word(self)
+        self.draw_hangman()
+
+        self.word_display = tk.StringVar()
+        self.word_display.set(" ".join("_" if char.isalpha() else char for char in self.word))
+        self.word_label = tk.Label(textvariable=self.word_display, font=('Helvetica', 16))
+        self.word_label.pack()
+
+        self.guess_entry = tk.Entry(font=('Helvetica', 16))
+        self.guess_entry.pack()
+        self.guess_entry.focus()
+
+        self.submit_button = tk.Button(text = "Guess", command=self.test_char)
+        self.submit_button.pack()
+
+    def draw_hangman(self):
+        self.canvas.delete("hangman")
+        x0, y0 = 20, 280
+        x1, y1 = 120, 280
+
+        if self.attempts_left < self.max_attempts:
+            self.canvas.create_line(x0, y0, x1, y1, tags="hangman")
+            self.canvas.create_line(x0 + 50, y0, x1 + 50, y1, tags="hangman")
+            self.canvas.create_line(x0, y0, x0 + 50, y0, tags="hangman")
+            self.canvas.create_line(x0, y0 - 200, x0, y0, tags="hangman")
+            self.canvas.create_line(x1, y0 - 200, x1, y0, tags="hangman")
+
+        if self.attempts_left < self.max_attempts - 1:
+            self.canvas.create_oval(x0 + 25, y0 - 200, x1 - 25, y0 - 150, tags="hangman")
+
+        if self.attempts_left < self.max_attempts - 2:
+            self.canvas.create_line(x0 + 50, y0 - 150, x0 + 50, y0 - 100, tags="hangman")
+
+        if self.attempts_left < self.max_attempts - 3:
+            self.canvas.create_line(x0 + 50, y0 - 100, x0 + 25, y0 - 75, tags="hangman")
+
+        if self.attempts_left < self.max_attempts - 4:
+            self.canvas.create_line(x0 + 50, y0 - 100, x0 + 75, y0 - 75, tags="hangman")
+
+        if self.attempts_left < self.max_attempts - 5:
+            self.canvas.create_line(x0 + 50, y0 - 200, x0 + 25, y0 - 225, tags="hangman")
+
+        if self.attempts_left < self.max_attempts - 6:
+            self.canvas.create_line(x0 + 50, y0 - 200, x0 + 75, y0 - 225, tags="hangman")
+
+    def restart(self):
+        self.word_label.pack_forget()
+        self.guess_entry.pack_forget()
+        self.submit_button.pack_forget()
+        self.restart_button.pack_forget()
+        self.canvas.delete("hangman")
+        self.new_game()
 
     def get_word(self):
         """
