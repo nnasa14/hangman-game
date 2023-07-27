@@ -1,13 +1,13 @@
 import tkinter as tk
 from tkinter import messagebox
-import Hangman
+from Hangman import Hangman
         
 
 if __name__ == "__main__":
-    root = tk.Tk()
-    root.title("Hangman")
+    #root = tk.Tk()
+    #root.title("Hangman")
     hangman_instance = Hangman()
-    root.mainloop()
+    #root.mainloop()
 
     target_word = hangman_instance.word
 
@@ -42,7 +42,14 @@ if __name__ == "__main__":
         for item in puzzle_list:                    #turn the list of "_" into a string
             puzzle_str += str(item)
 
-        if puzzle_str == target_word:
+        guess_word = input("Guess the word? (y/n) ")
+        if guess_word == "y":
+            input_guess = input("What is your guess? ")
+            hangman_instance.guessWord(input_guess)
+        else:
+            continue
+
+        if puzzle_str == target_word or hangman_instance.guessWord(input_guess) == True:
             print(f"You won in {attempts} guesses!")
             break
         if incorrect_attempts == guesses:
