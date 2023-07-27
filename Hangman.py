@@ -2,16 +2,11 @@ import tkinter as tk
 from tkinter import messagebox
 import json
 import random
+import math
 
 class Hangman:
     """
     A class of functions that fulfil the rules of a Hangman game
-
-    Methods:
-        new_game: Randomly generates a word as self.word
-        test_char(char): Determines if inputted character is within self.word
-        editPuzzle(char): Places a correctly guessed character in thier appriopriate position of self.puzzle
-        guessWord(guess): Validates if a guessed word is self.word
     """
     def __init__(self, master):
         self.master = master
@@ -51,33 +46,60 @@ class Hangman:
 
     def draw_gallows(self):
         self.canvas.delete("hangman")
-        x0, y0 = 20, 280
-        x1, y1 = 120, 280
+        x0, y0 = 50, 280
+        x1, y1 = 150, 280
 
+        # Draw the main structure
         if self.attempts_left < self.max_attempts:
-            self.canvas.create_line(x0, y0, x1, y1, tags="hangman")
-            self.canvas.create_line(x0 + 50, y0, x1 + 50, y1, tags="hangman")
-            self.canvas.create_line(x0, y0, x0 + 50, y0, tags="hangman")
-            self.canvas.create_line(x0, y0 - 200, x0, y0, tags="hangman")
-            self.canvas.create_line(x1, y0 - 200, x1, y0, tags="hangman")
+            self.canvas.create_line(x0, y0, x1, y1, tags="hangman")      # Bottom line
+            self.canvas.create_line(x0 + 50, y0, x1 + 50, y1, tags="hangman")  # Vertical line
+            self.canvas.create_line(x0, y0 - 300, x0, y0, tags="hangman")  # Left vertical line
+            self.canvas.create_line(x1, y0 - 250, x1, y0 - 220, tags="hangman")  # Right vertical line
 
+        # Draw the head
         if self.attempts_left < self.max_attempts - 1:
-            self.canvas.create_oval(x0 + 25, y0 - 200, x1 - 25, y0 - 150, tags="hangman")
+            head_radius = 25
+            head_center_x = x1
+            head_center_y = y0 - 195
+            self.canvas.create_oval(
+                head_center_x - head_radius, head_center_y - head_radius,
+                head_center_x + head_radius, head_center_y + head_radius, tags="hangman"
+            )
 
+        # Draw the body
         if self.attempts_left < self.max_attempts - 2:
-            self.canvas.create_line(x0 + 50, y0 - 150, x0 + 50, y0 - 100, tags="hangman")
+            self.canvas.create_line(x1, y0 - 170, x1, y0 - 68, tags="hangman")
 
+            """
+            body_radius = 15
+            body_height = 90
+            body_center_x = x1
+            body_center_y = y0 - 120
+            points = []
+
+            for angle in range(0, 360, int(360 / 100)):
+                radians_angle = angle * math.pi / 180.0
+                x_point = body_center_x + body_radius * 0.5 * math.cos(radians_angle)
+                y_point = body_center_y + body_height * 0.5 * math.sin(radians_angle)
+                points.append((x_point, y_point))
+
+            self.canvas.create_polygon(points, outline="black", fill="", tags="hangman")"""
+
+        # Draw the left arm
         if self.attempts_left < self.max_attempts - 3:
-            self.canvas.create_line(x0 + 50, y0 - 100, x0 + 25, y0 - 75, tags="hangman")
+            self.canvas.create_line(x1, y0 - 170, x1 - 25, y0 - 175, tags="hangman")
 
+        # Draw the right arm
         if self.attempts_left < self.max_attempts - 4:
-            self.canvas.create_line(x0 + 50, y0 - 100, x0 + 75, y0 - 75, tags="hangman")
+            self.canvas.create_line(x1 - 20, y0 - 170, x1 + 25, y0 - 175, tags="hangman")
 
+        # Draw the left leg
         if self.attempts_left < self.max_attempts - 5:
-            self.canvas.create_line(x0 + 50, y0 - 200, x0 + 25, y0 - 225, tags="hangman")
+            self.canvas.create_line(x1 + 20, y0 - 75, x1 - 25, y0, tags="hangman")
 
+        # Draw the right leg
         if self.attempts_left < self.max_attempts - 6:
-            self.canvas.create_line(x0 + 50, y0 - 200, x0 + 75, y0 - 225, tags="hangman")
+            self.canvas.create_line(x1, y0 - 75, x1 + 25, y0, tags="hangman")
 
     def restart(self):
         self.word_label.pack_forget()
@@ -86,23 +108,6 @@ class Hangman:
         self.restart_button.pack_forget()
         self.canvas.delete("hangman")
         self.start_game()
-
-    #def test_char(self, char):
-        """
-        Function that checks if a character is within self.word
-
-        Parameters:
-            char(str): An inputed character
-
-        Returns:
-            if char is in self.word, return the character in its correct position in self.puzzle
-            if not, return a False value
-        """
-        """for item in self.word.lower():
-            if item == char:
-                return self.update_word_display() 
-    
-        return False"""
     
     def update_word_display(self):
         displayed_word = ""
@@ -118,8 +123,13 @@ class Hangman:
             self.restart()
 
         elif self.attempts_left == 0:
+            self.attempts_left -= 1
+            self.draw_gallows()
+            self.master.update_idletasks()  # Update the display immediately
             messagebox.showinfo("Game Over", f"You lost. The word was '{self.word}'.")
             self.restart()
+            """self.master.after(100, lambda: messagebox.showinfo("Game Over", f"You lost. The word was '{self.word}'."))
+            self.restart()"""
 
         else:
             if self.guesses[-1] not in self.word:
