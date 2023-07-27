@@ -47,15 +47,15 @@ if __name__ == "__main__":
             break    
 
         puzzle_str = ""
-        for item in puzzle_list:                    #turn the list of "_" into a string
+        for item in puzzle_list:                        #turn the list of "_" into a string
             puzzle_str += str(item)
 
-        guess_word_return = ""
+        guess_word_return = ""                          #guess a word
         guess_word = input("Guess the word? (y/n) ")
         if guess_word == "y":
             input_guess = input("What is your guess? ")
             guess_word_return = hangman_instance.guessWord(input_guess)
 
-        if puzzle_str == target_word or guess_word_return == True:
+        if puzzle_str == target_word or guess_word_return == True:  #determine if completed inputs or guessed word is correct
             print(f"You won in {attempts} guesses!")
             break
