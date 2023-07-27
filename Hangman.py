@@ -137,10 +137,3 @@ class Hangman:
         else:
             messagebox.showinfo("Invalid Guess", "Please enter a single alphabetical character.")
         self.guess_entry.delete(0, tk.END)
-
-
-if __name__ == "__main__":
-    root = tk.Tk()
-    #root.title("Hangman")
-    hangman_instance = Hangman(root)
-    root.mainloop()
