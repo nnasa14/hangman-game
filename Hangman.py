@@ -13,7 +13,6 @@ class Hangman:
             self.word = None
             self.puzzle = []
 
-        self.incorrect_attempts = 0
         #self.guessed_chars = []
 
     def get_word(self):
@@ -29,12 +28,10 @@ class Hangman:
     def test_char(self, char):
         for item in self.word.lower():
             if item == char:
-                self.editPuzzle(char)     #print it on the approppriate position
+                self.editPuzzle(char)     
                 return self.puzzle
-
-        self.incorrect_attempts =+ 1
-        print(f"Incorrect. You have {self.incorrect_attempts} attempts left.")   #fix this so that the variable does not get reset each instance
-        return 
+    
+        return False
     
     def editPuzzle(self, char):
         for index, item in enumerate(self.word):
@@ -46,5 +43,5 @@ class Hangman:
             return True
         else:
             self.incorrect_attempts =+ 1
-            print(f"You guess, {guess}, was incorrect.")
+            print(f"Your guess, {guess}, was incorrect.")
             return
