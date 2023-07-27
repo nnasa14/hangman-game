@@ -1,4 +1,4 @@
-import tkinter as tk
+"""import tkinter as tk
 from tkinter import messagebox
 from Hangman import Hangman
         
@@ -42,3 +42,4 @@ if __name__ == "__main__":
         if puzzle_str == target_word or guess_word_return == True:  #determine if completed inputs or guessed word is correct
             messagebox.showinfo(f"You won in {attempts} guesses!")
             break
+"""

@@ -7,55 +7,46 @@ class Hangman:
     """
     A class of functions that fulfil the rules of a Hangman game
 
-    Attributes:
-        word(str): Randomly generated word
-        puzzle(list): List of "_"s that represent each character of self.word
-
     Methods:
-        get_word: Randomly generates a word as self.word
+        new_game: Randomly generates a word as self.word
         test_char(char): Determines if inputted character is within self.word
         editPuzzle(char): Places a correctly guessed character in thier appriopriate position of self.puzzle
         guessWord(guess): Validates if a guessed word is self.word
     """
-    def __init__(self, word=None):
-        if word is None:
-            word = self.get_word()
-
-        if word is not None:
-            self.word = word
-            self.puzzle = ["_" for _ in word]
-        else:
-            self.word = None
-            self.puzzle = []
+    def __init__(self, master):
+        self.master = master
+        with open("words.json", 'r') as file:
+            self.word_list = json.load(file)
+        self.word = ""
         self.guesses = []
         self.max_attempts = 6
         self.attempts_left = self.max_attempts
 
-        self.canvas = tk.Canvas(width=300, height=300)
+        self.canvas = tk.Canvas(master, width=300, height=300)
         self.canvas.pack()
 
-        self.restart_button = tk.Button(text="New Game",command=self.new_game)
-        self.new_game()
+        self.restart_button = tk.Button(master, text="New Game",command=self.start_game)
+        self.start_game()
 
-    def __str__(self):
-        return f"{self.word}"
+    """def __str__(self):
+        return f'{self.word}'"""
     
-    def new_game(self):
-        self.word = random.choice(self.word)
+    def start_game(self):
+        self.word = random.choice(self.word_list)
         self.guesses = []
         self.attempts_left = self.max_attempts
         self.draw_gallows()
 
         self.word_display = tk.StringVar()
         self.word_display.set(" ".join("_" if char.isalpha() else char for char in self.word))
-        self.word_label = tk.Label(textvariable=self.word_display, font=('Helvetica', 16))
+        self.word_label = tk.Label(self.master, textvariable=self.word_display, font=('Helvetica', 16))
         self.word_label.pack()
 
-        self.guess_entry = tk.Entry(font=('Helvetica', 16))
+        self.guess_entry = tk.Entry(self.master, font=('Helvetica', 16))
         self.guess_entry.pack()
         self.guess_entry.focus()
 
-        self.submit_button = tk.Button(text = "Guess", command=lambda: self.test_char(self.guess_entry.get()))
+        self.submit_button = tk.Button(self.master, text = "Guess", command=self.check_guess)
         self.submit_button.pack()
 
     def draw_gallows(self):
@@ -94,23 +85,9 @@ class Hangman:
         self.submit_button.pack_forget()
         self.restart_button.pack_forget()
         self.canvas.delete("hangman")
-        self.new_game()
+        self.start_game()
 
-    def get_word(self):
-        """
-        Function to randomly generate a word.
-
-        Returns:
-            A randomly word from a list of words in words.json
-        """
-        with open("words.json", 'r') as file:
-            word_list = json.load(file)
-
-        word = random.choice(word_list)
-        return word
-
-
-    def test_char(self, char):
+    #def test_char(self, char):
         """
         Function that checks if a character is within self.word
 
@@ -121,11 +98,11 @@ class Hangman:
             if char is in self.word, return the character in its correct position in self.puzzle
             if not, return a False value
         """
-        for item in self.word.lower():
+        """for item in self.word.lower():
             if item == char:
                 return self.update_word_display() 
     
-        return False
+        return False"""
     
     def update_word_display(self):
         displayed_word = ""
@@ -148,24 +125,6 @@ class Hangman:
             if self.guesses[-1] not in self.word:
                 self.attempts_left -= 1
                 self.draw_gallows()
-
-    def guessWord(self, guess):
-        """
-        Function that validates a guessed word to see if it matches self.word
-
-        Parameters:
-            guess(str): Guessed word
-
-        Return:
-            if guess is the same as self.word, return True
-            if not, return None
-        """
-        if guess == self.word:
-            return True
-        else:
-            self.incorrect_attempts =+ 1
-            messagebox.showinfo(f"Your guess, {guess}, was incorrect.")
-            return
         
     def check_guess(self):          #checks if guess if a valid input and appends to guesses list
         guess = self.guess_entry.get()
@@ -178,3 +137,10 @@ class Hangman:
         else:
             messagebox.showinfo("Invalid Guess", "Please enter a single alphabetical character.")
         self.guess_entry.delete(0, tk.END)
+
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    #root.title("Hangman")
+    hangman_instance = Hangman(root)
+    root.mainloop()
