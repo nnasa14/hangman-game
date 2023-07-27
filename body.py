@@ -11,16 +11,7 @@ if __name__ == "__main__":
 
     target_word = hangman_instance.word
 
-    difficulty = input("Please select your difficulty: (hard, normal, easy)")
-    if difficulty == "hard":
-        guesses = 3
-    elif difficulty == "normal":
-        guesses = 5
-    elif difficulty == "easy":
-        guesses = 7 
-    else:
-        print('Please run again and type "hard", "normal", or "easy".')
-
+    guesses = 6
     incorrect_attempts = 0
     attempts = 0
 
@@ -29,18 +20,28 @@ if __name__ == "__main__":
     print(puzzle_list)
 
     while True:
-        #if guesses == 0:
-        #    break
-
         char_guess = str(input("Guess a letter: "))
-        #print(f"Your guess was {char_guess}")
         char_guess_return = hangman_instance.test_char(char_guess)     
         print(puzzle_list)   
         attempts += 1             
 
+        hangman_instance.draw_gallows
+
         if char_guess_return == False:
             incorrect_attempts += 1
-            print(f"Incorrect. You have {(guesses - incorrect_attempts)} attempts left.")   
+            print(f"Incorrect. You have {(guesses - incorrect_attempts)} attempts left.")
+            if incorrect_attempts == 1:
+                hangman_instance.draw_head
+            elif incorrect_attempts == 2:
+                hangman_instance.draw_left_arm   
+            elif incorrect_attempts == 3:
+                hangman_instance.draw_right_arm   
+            elif incorrect_attempts == 4:
+                hangman_instance.draw_left_leg   
+            elif incorrect_attempts == 5:
+                hangman_instance.draw_right_leg   
+            elif incorrect_attempts == 6:
+                hangman_instance.draw_ending   
 
         if incorrect_attempts == guesses:
             print(f"You lost. The correct answer is: {target_word}")

@@ -39,7 +39,7 @@ class Hangman:
     
     def new_game(self):
         self.word = Hangman.get_word(self)
-        self.draw_hangman()
+        self.draw_gallows()
 
         self.word_display = tk.StringVar()
         self.word_display.set(" ".join("_" if char.isalpha() else char for char in self.word))
@@ -50,38 +50,50 @@ class Hangman:
         self.guess_entry.pack()
         self.guess_entry.focus()
 
-        self.submit_button = tk.Button(text = "Guess", command=self.test_char)
+        self.submit_button = tk.Button(text = "Guess", command=lambda: self.test_char(self.guess_entry.get()))
         self.submit_button.pack()
 
-    def draw_hangman(self):
+    def draw_gallows(self):
         self.canvas.delete("hangman")
         x0, y0 = 20, 280
         x1, y1 = 120, 280
 
-        if self.attempts_left < self.max_attempts:
-            self.canvas.create_line(x0, y0, x1, y1, tags="hangman")
-            self.canvas.create_line(x0 + 50, y0, x1 + 50, y1, tags="hangman")
-            self.canvas.create_line(x0, y0, x0 + 50, y0, tags="hangman")
-            self.canvas.create_line(x0, y0 - 200, x0, y0, tags="hangman")
-            self.canvas.create_line(x1, y0 - 200, x1, y0, tags="hangman")
+        self.canvas.create_line(x0, y0, x1, y1, tags="hangman")
+        self.canvas.create_line(x0 + 50, y0, x1 + 50, y1, tags="hangman")
+        self.canvas.create_line(x0, y0, x0 + 50, y0, tags="hangman")
+        self.canvas.create_line(x0, y0 - 200, x0, y0, tags="hangman")
+        self.canvas.create_line(x1, y0 - 200, x1, y0, tags="hangman")
 
-        if self.attempts_left < self.max_attempts - 1:
-            self.canvas.create_oval(x0 + 25, y0 - 200, x1 - 25, y0 - 150, tags="hangman")
+    def draw_head(self):
+        x0, y0 = 20, 280
+        x1 = 120
 
-        if self.attempts_left < self.max_attempts - 2:
-            self.canvas.create_line(x0 + 50, y0 - 150, x0 + 50, y0 - 100, tags="hangman")
+        self.canvas.create_oval(x0 + 25, y0 - 200, x1 - 25, y0 - 150, tags="hangman")
 
-        if self.attempts_left < self.max_attempts - 3:
-            self.canvas.create_line(x0 + 50, y0 - 100, x0 + 25, y0 - 75, tags="hangman")
+    def draw_right_arm(self):
+        x0, y0 = 20, 280
 
-        if self.attempts_left < self.max_attempts - 4:
-            self.canvas.create_line(x0 + 50, y0 - 100, x0 + 75, y0 - 75, tags="hangman")
+        self.canvas.create_line(x0 + 50, y0 - 150, x0 + 50, y0 - 100, tags="hangman")
 
-        if self.attempts_left < self.max_attempts - 5:
-            self.canvas.create_line(x0 + 50, y0 - 200, x0 + 25, y0 - 225, tags="hangman")
+    def draw_left_arm(self):
+        x0, y0 = 20, 280
 
-        if self.attempts_left < self.max_attempts - 6:
-            self.canvas.create_line(x0 + 50, y0 - 200, x0 + 75, y0 - 225, tags="hangman")
+        self.canvas.create_line(x0 + 50, y0 - 100, x0 + 25, y0 - 75, tags="hangman")
+
+    def draw_left_leg(self):
+        x0, y0 = 20, 280
+
+        self.canvas.create_line(x0 + 50, y0 - 100, x0 + 75, y0 - 75, tags="hangman")
+
+    def draw_right_leg(self):
+        x0, y0 = 20, 280
+
+        self.canvas.create_line(x0 + 50, y0 - 200, x0 + 25, y0 - 225, tags="hangman")
+    
+    def draw_ending(self):
+        x0, y0 = 20, 280
+
+        self.canvas.create_line(x0 + 50, y0 - 200, x0 + 75, y0 - 225, tags="hangman")
 
     def restart(self):
         self.word_label.pack_forget()
