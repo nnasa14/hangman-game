@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import messagebox
 import json
 import random
-import math
 
 class Hangman:
     """
@@ -70,32 +69,17 @@ class Hangman:
         if self.attempts_left < self.max_attempts - 2:
             self.canvas.create_line(x1, y0 - 170, x1, y0 - 68, tags="hangman")
 
-            """
-            body_radius = 15
-            body_height = 90
-            body_center_x = x1
-            body_center_y = y0 - 120
-            points = []
-
-            for angle in range(0, 360, int(360 / 100)):
-                radians_angle = angle * math.pi / 180.0
-                x_point = body_center_x + body_radius * 0.5 * math.cos(radians_angle)
-                y_point = body_center_y + body_height * 0.5 * math.sin(radians_angle)
-                points.append((x_point, y_point))
-
-            self.canvas.create_polygon(points, outline="black", fill="", tags="hangman")"""
-
         # Draw the left arm
         if self.attempts_left < self.max_attempts - 3:
-            self.canvas.create_line(x1, y0 - 170, x1 - 25, y0 - 175, tags="hangman")
+            self.canvas.create_line(x1, y0 - 170, x1 - 50, y0 - 150, tags="hangman")
 
         # Draw the right arm
         if self.attempts_left < self.max_attempts - 4:
-            self.canvas.create_line(x1 - 20, y0 - 170, x1 + 25, y0 - 175, tags="hangman")
+            self.canvas.create_line(x1, y0 - 170, x1 + 50, y0 - 150, tags="hangman")
 
         # Draw the left leg
         if self.attempts_left < self.max_attempts - 5:
-            self.canvas.create_line(x1 + 20, y0 - 75, x1 - 25, y0, tags="hangman")
+            self.canvas.create_line(x1, y0 - 75, x1 - 25, y0, tags="hangman")
 
         # Draw the right leg
         if self.attempts_left < self.max_attempts - 6:
@@ -128,8 +112,6 @@ class Hangman:
             self.master.update_idletasks()  # Update the display immediately
             messagebox.showinfo("Game Over", f"You lost. The word was '{self.word}'.")
             self.restart()
-            """self.master.after(100, lambda: messagebox.showinfo("Game Over", f"You lost. The word was '{self.word}'."))
-            self.restart()"""
 
         else:
             if self.guesses[-1] not in self.word:
