@@ -6,3 +6,6 @@ if __name__ == "__main__":
     root.title("Hangman")
     hangman_instance = Hangman(root)
     root.mainloop()
+
+# TODO: add list of wrong guesses
+# TODO: add guess word funct to hangman.py
