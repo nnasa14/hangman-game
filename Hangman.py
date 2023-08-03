@@ -22,10 +22,6 @@ class Hangman:
         # Create a label to show guessed letters
         self.guessed_letters_label = tk.Label(master, text="Guessed Letters: ")
         self.guessed_letters_label.pack()
-        
-        # Bind mouse events to the label
-        self.guessed_letters_label.bind("<Enter>", self.show_guessed_letters)
-        self.guessed_letters_label.bind("<Leave>", self.hide_guessed_letters)
 
         self.restart_button = tk.Button(master, text="New Game",command=self.start_game)
         self.start_game()
@@ -99,6 +95,7 @@ class Hangman:
         self.submit_button.pack_forget()
         self.restart_button.pack_forget()
         self.letters_guessed = []
+        self.update_guessed_letters()
         self.canvas.delete("hangman")
         self.start_game()
     
@@ -158,10 +155,3 @@ class Hangman:
     def update_guessed_letters(self):
         guessed_str = ", ".join(self.letters_guessed)
         self.guessed_letters_label.config(text=f"Guessed Letters: {guessed_str}")
-
-    def show_guessed_letters(self, event):
-        guessed_str = ", ".join(self.letters_guessed)
-        self.guessed_letters_label.config(text=f"Guessed Letters: {guessed_str}")
-
-    def hide_guessed_letters(self, event):
-        self.guessed_letters_label.config(text="Guessed Letters: ")
