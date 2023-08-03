@@ -124,7 +124,7 @@ class Hangman:
         if len(guess) == 1:     # Guessing the character
             if guess.isalpha() and guess not in self.letters_guessed:
                 self.letters_guessed.append(guess)
-                self.update_word_display
+                self.update_word_display()
             elif guess.isalpha():
                 messagebox.showinfo("Invalid Guess", "You've already guessed that letter.")
             else:
