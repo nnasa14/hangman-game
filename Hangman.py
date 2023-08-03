@@ -120,25 +120,29 @@ class Hangman:
                 self.draw_gallows()
 
     def update_word(self):
-        # FIXME: match this to check if guessed word is self.word
+        """displayed_word = ""
+        guessed_word = self.words_guessed[0]
+        
+        for letter in self.word:
+            if letter in guessed_word:
+                displayed_word += letter + ' '
+            else:
+                displayed_word += '_ '
+        self.word_display.set(displayed_word.strip())"""
 
         if self.word in self.words_guessed:
             messagebox.showinfo("Congratulations", "You won!")
             self.restart()
 
-        elif self.attempts_left == 0:
+        else:
+            # BUG: Immediate game over and fully drawn hangman upon incorrect guess.
             self.attempts_left -= 1
             self.draw_gallows()
             self.master.update_idletasks()  # Update the display immediately
             messagebox.showinfo("Game Over", f"You lost. The word was '{self.word}'.")
             self.restart()
-
-        else:
-            if self.words_guessed[-1] != self.word:
-                self.attempts_left -= 1
-                self.draw_gallows()
         
-    def check_guess(self):          #checks if guess if a valid input and appends to guesses list
+    def check_guess(self):          # Checks if guess is a valid input and appends to guesses list
         # FIXME: need to direct to check word if length > 1
         
         guess = self.guess_entry.get()
@@ -147,22 +151,14 @@ class Hangman:
                 self.letters_guessed.append(guess)
                 self.update_word_display()
             else:
-                #messagebox.showinfo("Invalid Guess", "You've already guessed that letter.")
-                self.check_word
+                if len(guess) < 2:
+                    messagebox.showinfo("Invalid Guess", "You've already guessed that letter.")
+                else:
+                    self.words_guessed.append(guess)
+                    self.update_word()
         else:
-            messagebox.showinfo("Invalid Guess", "Please enter a single alphabetical character.")
-        self.guess_entry.delete(0, tk.END)
-
-    def check_word(self):
-        # BUG: reset does not empty guessed char list
-
-        guess = self.guess_entry.get()
-        if guess and len(guess) > 1:
-            if guess not in self.words_guessed:
-                self.words_guessed.append(guess)
-                self.update_word()
+            if len(guess) < 2:
+                messagebox.showinfo("Invalid Guess", "Please enter a single alphabetical character.")
             else:
-                messagebox.showinfo("Invalid Guess", "You've already guessed that word.")
-        else:
-            messagebox.showinfo("Invalid Guess", "Please enter a word.")
+                self.update_word()
         self.guess_entry.delete(0, tk.END)
