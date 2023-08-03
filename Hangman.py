@@ -19,6 +19,14 @@ class Hangman:
         self.canvas = tk.Canvas(master, width=300, height=300)
         self.canvas.pack()
 
+        # Create a label to show guessed letters
+        self.guessed_letters_label = tk.Label(master, text="Guessed Letters: ")
+        self.guessed_letters_label.pack()
+        
+        # Bind mouse events to the label
+        self.guessed_letters_label.bind("<Enter>", self.show_guessed_letters)
+        self.guessed_letters_label.bind("<Leave>", self.hide_guessed_letters)
+
         self.restart_button = tk.Button(master, text="New Game",command=self.start_game)
         self.start_game()
 
@@ -124,6 +132,7 @@ class Hangman:
         if len(guess) == 1:     # Guessing the character
             if guess.isalpha() and guess not in self.letters_guessed:
                 self.letters_guessed.append(guess)
+                self.update_guessed_letters()
                 self.update_word_display()
             elif guess.isalpha():
                 messagebox.showinfo("Invalid Guess", "You've already guessed that letter.")
@@ -131,6 +140,7 @@ class Hangman:
                 messagebox.showinfo("Invalid Guess", "Please enter a single alphabetical character.")
         else:               # Guessing the word
             if guess == self.word:
+                # FIXME: update word display 
                 messagebox.showinfo("Congratulations", "You won!")
                 self.restart()
             
@@ -144,3 +154,14 @@ class Hangman:
                 messagebox.showinfo("Invalid Guess", "Please enter a single alphabetical character.")
 
         self.guess_entry.delete(0, tk.END)
+
+    def update_guessed_letters(self):
+        guessed_str = ", ".join(self.letters_guessed)
+        self.guessed_letters_label.config(text=f"Guessed Letters: {guessed_str}")
+
+    def show_guessed_letters(self, event):
+        guessed_str = ", ".join(self.letters_guessed)
+        self.guessed_letters_label.config(text=f"Guessed Letters: {guessed_str}")
+
+    def hide_guessed_letters(self, event):
+        self.guessed_letters_label.config(text="Guessed Letters: ")
