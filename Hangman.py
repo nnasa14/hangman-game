@@ -13,7 +13,6 @@ class Hangman:
             self.word_list = json.load(file)
         self.word = ""
         self.letters_guessed = []
-        self.word_guessed = []
         self.max_attempts = 6
         self.attempts_left = self.max_attempts
 
@@ -91,6 +90,7 @@ class Hangman:
         self.guess_entry.pack_forget()
         self.submit_button.pack_forget()
         self.restart_button.pack_forget()
+        self.letters_guessed = []
         self.canvas.delete("hangman")
         self.start_game()
     
