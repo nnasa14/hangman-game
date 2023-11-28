@@ -127,7 +127,7 @@ class Hangman:
         
     def check_guess(self):          # Checks if guess is a valid input and appends to guesses list
         guess = self.guess_entry.get()
-        if len(guess) == 1:     # Guessing the character
+        if len(guess) == 1:                     # Single-character guess
             if guess.isalpha() and guess not in self.letters_guessed:
                 self.letters_guessed.append(guess)
                 self.update_guessed_letters()
@@ -136,12 +136,11 @@ class Hangman:
                 messagebox.showinfo("Invalid Guess", "You've already guessed that letter.")
             else:
                 messagebox.showinfo("Invalid Guess", "Please enter a single alphabetical character.")
-        else:               # Guessing the word
+        elif len(guess) > 1:                               # Whole word guess
             if guess == self.word:
                 # FIXME: update word display 
                 messagebox.showinfo("Congratulations", "You won!")
                 self.restart()
-            
             else:
                 # FIXME: Immediate game over and fully drawn hangman upon incorrect guess.
                 #self.draw_gallows()
